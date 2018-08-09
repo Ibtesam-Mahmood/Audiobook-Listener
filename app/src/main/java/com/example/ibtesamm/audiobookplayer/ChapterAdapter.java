@@ -8,14 +8,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterHolder> {
+
     @NonNull
     @Override
-    public ChapterAdapter.ChapterAdapter onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ChapterHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChapterAdapter.ChapterAdapter chapterAdapter, int i) {
+    public void onBindViewHolder(@NonNull ChapterHolder cChapterHolder, int i) {
 
     }
 
