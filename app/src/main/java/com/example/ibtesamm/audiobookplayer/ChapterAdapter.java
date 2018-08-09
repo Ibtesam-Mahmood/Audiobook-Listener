@@ -36,15 +36,16 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
 
     //Binds a list item to the holder
     @Override
-    public void onBindViewHolder(@NonNull ChapterHolder chapterHolder, int i) {
+    public void onBindViewHolder(@NonNull final ChapterHolder chapterHolder, final int i) {
 
-        ChapterInfo chapter = list.get(i);
+        final ChapterInfo chapter = list.get(i);
 
         chapterHolder.chapterName.setText( chapter.name ); //Sets the name of the chapter
         chapterHolder.actionButton.setOnClickListener(new View.OnClickListener() { //Sets the onclick listener
             @Override
             public void onClick(View view) {
-
+                if(onButtonClickListener != null)
+                    onButtonClickListener.onButtonClick(chapterHolder.actionButton, view, chapter, i);
             }
         });
 
@@ -54,6 +55,16 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setOnButtonClickListener(onButtonClickListener onButtonClickListener) {
+        this.onButtonClickListener = onButtonClickListener;
+    }
+
+    public interface onButtonClickListener{
+
+        void onButtonClick(Button b, View v,  ChapterInfo c, int pos);
+
     }
 
 
