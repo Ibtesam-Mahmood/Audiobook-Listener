@@ -9,13 +9,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Switch;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    //Base
+    final String TAG = "MainActivity";
 
     //View Elements
     RecyclerView chapterView;
@@ -52,8 +59,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Checks the /Books directory and adds the books to the list
+    //to be later displayed by the recycler view
+    private void addChapters(){
+
+        //Sets the path to the /Books folder
+        File pathFile = new File(booksPath);
+
+        //Finds all the mp3 files in the directory
+        File[] books = pathFile.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String name) {
+                name = name.toLowerCase();
+                return name.endsWith(".mp3");
+            }
+        });
+
+        //Displays the chapters
+        if(books != null){
+            for(File chapter : books){
+                Log.e(TAG, chapter.getName() );
+            }
+        }
+
+    }
+
     //Adds the chapter cards to the recycler view
-    private void defineChpaters(){
+    private void showChapters(){
 
         //Sets the orientarion
         chapterView.setLayoutManager(new LinearLayoutManager(this) );
@@ -98,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
             case 2501: //If external memory reading is changed
                 if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    addChapters();
                 }
 
         }
