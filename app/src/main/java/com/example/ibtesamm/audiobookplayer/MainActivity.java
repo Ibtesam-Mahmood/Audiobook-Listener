@@ -157,6 +157,10 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(permission, code);
             }
 
+        } else{
+            //Runs this if the permission is already granted
+            onPermissionGranted(code);
+
         }
 
 
