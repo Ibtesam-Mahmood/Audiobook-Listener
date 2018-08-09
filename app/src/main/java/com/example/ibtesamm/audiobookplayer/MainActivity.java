@@ -1,5 +1,10 @@
 package com.example.ibtesamm.audiobookplayer;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     ChapterAdapter chapterAdapter;
     ArrayList<ChapterInfo> chapters;
 
+    //Files
+    String booksPath = "/storage/self/primary/Books";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
         //Defines the chapters list
         chapters = new ArrayList<>();
 
-        chapters.add( new ChapterInfo("Harry Potter ch.1", ""));
+        //Checks permissions
+        String[] permissions = new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+        requestPermission(permissions, 2501);
 
-        defineChpaters();
 
     }
 
@@ -60,5 +71,38 @@ public class MainActivity extends AppCompatActivity {
 
         chapterView.setAdapter(chapterAdapter); //Sets the adapter to the recycler view and shows the cards
 
+    }
+
+
+    //Requests a set of permissions from the user if they are disabled
+    //@param permission - the set of permissions you wish to check
+    //@param code - a code that the you enter to match the permission request
+    public void requestPermission(String[] permission, int code){
+
+
+        if (ContextCompat.checkSelfPermission(this, permission[0]) != PackageManager.PERMISSION_GRANTED){
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(permission, code);
+            }
+
+        }
+
+
+    }
+
+    //Responds to the change in permission status
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+
+            case 2501: //If external memory reading is changed
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
