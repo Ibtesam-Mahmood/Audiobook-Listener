@@ -57,10 +57,12 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
         return list.size();
     }
 
+    //Sets the onButtonClickListener
     public void setOnButtonClickListener(onButtonClickListener onButtonClickListener) {
         this.onButtonClickListener = onButtonClickListener;
     }
 
+    //Interface that is used to define the buttons within the cardHolder
     public interface onButtonClickListener{
 
         void onButtonClick(Button b, View v,  ChapterInfo c, int pos);
