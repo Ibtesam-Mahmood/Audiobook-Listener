@@ -30,8 +30,10 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
         TextView chapterName;
         Button actionButton;
 
-        public ChapterHolder(@NonNull View itemView) {
+        public ChapterHolder(View itemView) {
             super(itemView);
+            chapterName = itemView.findViewById(R.id.chapterName);
+            actionButton = itemView.findViewById(R.id.actionBtn);
         }
     }
 }
