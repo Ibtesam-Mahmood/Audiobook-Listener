@@ -2,8 +2,10 @@ package com.example.ibtesamm.audiobookplayer;
 
 public class ChapterInfo {
 
-    public String name;
-    public String url;
+    //Class that represents a chapter
+
+    public String name; //Name of the Book
+    public String url; //Url for the song
 
     public ChapterInfo() {
 

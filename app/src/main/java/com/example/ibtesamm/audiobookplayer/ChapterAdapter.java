@@ -1,29 +1,61 @@
 package com.example.ibtesamm.audiobookplayer;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.zip.Inflater;
+
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterHolder> {
 
+    //Adapter for the chapter recycler view
+
+    ArrayList<ChapterInfo> list; //List that holds all cards
+    Context context;
+
+    onButtonClickListener onButtonClickListener;
+
+    public ChapterAdapter(Context context, ArrayList<ChapterInfo> list) {
+        this.list = list;
+        this.context = context;
+    }
+
+    //Creates a holder and attaches it to the chpater_layout
     @NonNull
     @Override
     public ChapterHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return null;
+        return new ChapterHolder( LayoutInflater.from(context).inflate(R.layout.chapter_layout, viewGroup, false) );
     }
 
+    //Binds a list item to the holder
     @Override
-    public void onBindViewHolder(@NonNull ChapterHolder cChapterHolder, int i) {
+    public void onBindViewHolder(@NonNull ChapterHolder chapterHolder, int i) {
+
+        ChapterInfo chapter = list.get(i);
+
+        chapterHolder.chapterName.setText( chapter.name ); //Sets the name of the chapter
+        chapterHolder.actionButton.setOnClickListener(new View.OnClickListener() { //Sets the onclick listener
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
+    //Amount of items
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
+
 
     public class ChapterHolder extends RecyclerView.ViewHolder{
 
