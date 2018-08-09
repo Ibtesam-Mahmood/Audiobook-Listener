@@ -21,6 +21,7 @@ import android.widget.Switch;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Checks the /Books directory and adds the books to the list
     //to be later displayed by the recycler view
-    private void addChapters(){
+    private void addChapters() throws MalformedURLException {
 
         //Sets the path to the /Books folder
         File pathFile = new File(booksPath);
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         //Adds the chapter to the list to be later displayed by the recycler view
         if(books != null){
             for(File chapter : books){
-                ChapterInfo chapterInfo = new ChapterInfo(chapter.getName(), "");
+                ChapterInfo chapterInfo = new ChapterInfo(chapter.getName(), chapter.toURI().toURL().toString());
                 chapters.add(chapterInfo);
             }
         }
@@ -90,38 +91,7 @@ public class MainActivity extends AppCompatActivity {
         showChapters();
 
     }
-
-    //Using uris
-    private void addChapters(int useless){
-
-        //Gets the URI for the /Books path
-        Uri fileDir = Uri.parse(booksPath);
-
-        //Refines the search to media files
-        String selection = MediaStore.Audio.Media.IS_MUSIC+"!=0";
-
-        //Pulls all media files from the books directory
-        Cursor cursor = getContentResolver().query(fileDir,null,selection,null,null);
-
-        //Adds the chapter to the list to be later displayed by the recycler view
-        if(cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-
-                    ChapterInfo chapterInfo = new ChapterInfo(name, url);
-                    chapters.add(chapterInfo);
-
-                } while (cursor.moveToNext());
-            }
-
-            cursor.close();
-        }
-
-        showChapters();
-
-    }
+    
 
     //Adds the chapter cards to the recycler view
     private void showChapters(){
@@ -185,7 +155,11 @@ public class MainActivity extends AppCompatActivity {
         switch (code){
 
             case 2501:
-                addChapters(0);
+                try {
+                    addChapters();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
                 return;
 
         }
