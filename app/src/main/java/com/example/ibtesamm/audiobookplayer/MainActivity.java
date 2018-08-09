@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         //Defines the chapters list
         chapters = new ArrayList<>();
 
+        chapters.add( new ChapterInfo("Harry Potter ch.1", ""));
+
         defineChpaters();
 
     }
