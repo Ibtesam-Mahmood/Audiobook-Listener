@@ -2,8 +2,12 @@ package com.example.ibtesamm.audiobookplayer;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -87,6 +91,38 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Using uris
+    private void addChapters(int useless){
+
+        //Gets the URI for the /Books path
+        Uri fileDir = Uri.parse(booksPath);
+
+        //Refines the search to media files
+        String selection = MediaStore.Audio.Media.IS_MUSIC+"!=0";
+
+        //Pulls all media files from the books directory
+        Cursor cursor = getContentResolver().query(fileDir,null,selection,null,null);
+
+        //Adds the chapter to the list to be later displayed by the recycler view
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
+                    String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+                    ChapterInfo chapterInfo = new ChapterInfo(name, url);
+                    chapters.add(chapterInfo);
+
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+        }
+
+        showChapters();
+
+    }
+
     //Adds the chapter cards to the recycler view
     private void showChapters(){
 
@@ -145,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         switch (code){
 
             case 2501:
-                addChapters();
+                addChapters(0);
                 return;
 
         }
