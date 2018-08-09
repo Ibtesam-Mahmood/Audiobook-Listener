@@ -91,12 +91,12 @@ public class MainActivity extends AppCompatActivity {
         showChapters();
 
     }
-    
+
 
     //Adds the chapter cards to the recycler view
     private void showChapters(){
 
-        //Sets the orientarion
+        //Sets the orientation
         chapterView.setLayoutManager(new LinearLayoutManager(this) );
 
         //Creates the adapter
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         chapterAdapter.setOnButtonClickListener(new ChapterAdapter.onButtonClickListener() {
             @Override
             public void onButtonClick(Button b, View v, ChapterInfo c, int pos) {
-                //When button clicked
+                //Play Sound
             }
         });
 
