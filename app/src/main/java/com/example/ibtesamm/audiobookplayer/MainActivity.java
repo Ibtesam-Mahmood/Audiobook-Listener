@@ -75,12 +75,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Displays the chapters
+        //Adds the chapter to the list to be later displayed by the recycler view
         if(books != null){
             for(File chapter : books){
-                Log.e(TAG, chapter.getName() );
+                ChapterInfo chapterInfo = new ChapterInfo(chapter.getName(), "");
+                chapters.add(chapterInfo);
             }
         }
+
+        showChapters();
 
     }
 
@@ -126,15 +129,27 @@ public class MainActivity extends AppCompatActivity {
     //Responds to the change in permission status
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-
-            case 2501: //If external memory reading is changed
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    addChapters();
-                }
-
+        //Do nothing if the permission is not granted
+        if(grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
+
+        onPermissionGranted(requestCode);
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+    //Runs the segment of code indented to run if the permission passed (identified though a code) is granted
+    private void onPermissionGranted(int code){
+
+        switch (code){
+
+            case 2501:
+                addChapters();
+                return;
+
+        }
+
+    }
+
 }
