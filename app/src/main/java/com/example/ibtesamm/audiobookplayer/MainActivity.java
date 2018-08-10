@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onButtonClick(Button b, View v, ChapterInfo c, int pos) {
                 String btnText = b.getText().toString();
-
-                if(btnText.toLowerCase() == "play"){
+                //Log.e(TAG, btnText );
+                if(btnText.toLowerCase().contains("play")){
                     //play song
 
                     try {
@@ -169,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Stops the media player
     private void stop(){
+
+        if(mMediaPlayer == null) return;
 
         mMediaPlayer.stop();
         mMediaPlayer.reset();
