@@ -71,6 +71,28 @@ public class MainActivity extends AppCompatActivity {
         Thread seekBarThread = new SeekBarThread();
         seekBarThread.start();
 
+        //Seek Bar Setup
+        playBack.setMax(0);
+        playBack.setProgress(0);
+        playBack.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int pos, boolean b) {
+                //Sets the progress of the media player to the desired area
+
+                if(mMediaPlayer != null){
+
+                    mMediaPlayer.seekTo( pos ); //seeks the the changed position
+
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
 
     }
 
