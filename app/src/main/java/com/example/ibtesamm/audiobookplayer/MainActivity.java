@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     //System
     private final String TAG = "MainActivity";
-    private Thread seekBarThread;
 
     //View Elements
     private RecyclerView chapterView;
@@ -69,8 +68,10 @@ public class MainActivity extends AppCompatActivity {
         requestPermission(permissions, 2501);
 
         //SeeksBar Manager Thread created
-        seekBarThread = new SeekBarThread();
+        Thread seekBarThread = new SeekBarThread();
         seekBarThread.start();
+
+
     }
 
     @Override
@@ -171,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     //Stops the media player
@@ -263,9 +263,9 @@ public class MainActivity extends AppCompatActivity {
                     playBack.post(new Runnable() {
                         @Override
                         public void run() {
-
+//                            Log.e(TAG, mMediaPlayer.getCurrentPosition() + " | " + playBack.getProgress());
+                            playBack.setMax( mMediaPlayer.getDuration() ); //Fixes the seekbar bug (seek bar wouldnt move)
                             playBack.setProgress( mMediaPlayer.getCurrentPosition() );
-
                         }
                     });
 
