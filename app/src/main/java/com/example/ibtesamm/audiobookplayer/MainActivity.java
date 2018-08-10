@@ -3,6 +3,7 @@ package com.example.ibtesamm.audiobookplayer;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -21,12 +22,13 @@ import android.widget.Switch;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Base
+    //System
     final String TAG = "MainActivity";
 
     //View Elements
@@ -34,13 +36,17 @@ public class MainActivity extends AppCompatActivity {
     Button playButton;
     SeekBar playBack;
 
-    //Support
+    //RecyclerView Support
     ChapterAdapter chapterAdapter;
     ArrayList<ChapterInfo> chapters;
 
     //Files
     String booksPath = "/storage/self/primary/Books";
 
+    //Media
+    MediaPlayer mMediaPlayer;
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SYSTEM~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CHAPTERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     //Checks the /Books directory and adds the books to the list
     //to be later displayed by the recycler view
@@ -106,7 +121,30 @@ public class MainActivity extends AppCompatActivity {
         chapterAdapter.setOnButtonClickListener(new ChapterAdapter.onButtonClickListener() {
             @Override
             public void onButtonClick(Button b, View v, ChapterInfo c, int pos) {
-                //Play Sound
+                String btnText = b.getText().toString();
+
+                if(btnText.toLowerCase() == "play"){
+                    //play song
+
+                    try {
+                        play(c.url)
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    b.setText("Stop"); //Sets the button text to stop so that it may be used to stop the audio
+                }
+                else{
+                    //stop song
+
+                    mMediaPlayer.stop();
+                    mMediaPlayer.reset();
+                    mMediaPlayer.release();
+                    mMediaPlayer = null;
+
+                    b.setText("Play");
+
+                }
             }
         });
 
@@ -114,6 +152,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~MEDIA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    //Plays the media file defined by the given url
+    private void play(String url) throws IOException {
+
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setDataSource(url); //Finds the url for the chapter
+        mMediaPlayer.prepareAsync(); //Prepares the song Asynchronously
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                //When chapter is prepared
+                mediaPlayer.start();
+            }
+        });
+
+    }
+
+
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PERMISSIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     //Requests a set of permissions from the user if they are disabled
     //@param permission - the set of permissions you wish to check
