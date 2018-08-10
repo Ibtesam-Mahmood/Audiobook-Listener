@@ -62,7 +62,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
             @SuppressLint("ResourceAsColor")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.e(TAG, motionEvent.getAction() + "");
+//                Log.e(TAG, motionEvent.getAction() + "");
 
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) //If pressed make darker
                     chapterHolder.background.setBackgroundResource(R.color.cardBackgroundDark);
