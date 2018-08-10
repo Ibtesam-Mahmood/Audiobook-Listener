@@ -63,10 +63,13 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 Log.e(TAG, motionEvent.getAction() + "");
-                if(motionEvent.getAction() == 0)
-                    chapterHolder.background.setBackgroundColor(R.color.cardview_light_background); //change the background to dark
-                else if (motionEvent.getAction() == 1)
-                    chapterHolder.background.setBackgroundColor(R.color.cardview_light_background); //change the background to light
+
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) //If pressed make darker
+                    chapterHolder.background.setBackgroundResource(R.color.cardBackgroundDark);
+
+                else //If released make lighter
+                    chapterHolder.background.setBackgroundResource(R.color.cardBackgroundLight);
+
                 return false;
             }
         });

@@ -10,8 +10,7 @@
         android:id="@+id/cardBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background">
-
+        android:background="@color/cardBackgroundLight">
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="341dp"
