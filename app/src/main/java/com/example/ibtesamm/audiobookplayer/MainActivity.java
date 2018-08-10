@@ -37,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar playBack;
 
     //RecyclerView Support
-    private ChapterAdapter chapterAdapter;
     private ArrayList<ChapterInfo> chapters;
+    private ChapterAdapter chapterAdapter;
+    private int currentSongIndex = 0;
 
     //Files
     private String booksPath = "/storage/self/primary/Books";
@@ -140,12 +141,14 @@ public class MainActivity extends AppCompatActivity {
         chapterView.setLayoutManager(new LinearLayoutManager(this) );
 
         //Creates the adapter
-        ChapterAdapter chapterAdapter = new ChapterAdapter(this, chapters);
+        chapterAdapter = new ChapterAdapter(this, chapters);
 
         //Defines that the play buttons on the cards do
         chapterAdapter.setOnButtonClickListener(new ChapterAdapter.onButtonClickListener() {
             @Override
             public void onButtonClick(Button b, View v, ChapterInfo c, int pos) {
+                currentSongIndex = pos; //Sets the current songs index
+
                 String btnText = b.getText().toString();
                 //Log.e(TAG, btnText );
                 if(btnText.toLowerCase().contains("play")){
@@ -191,6 +194,22 @@ public class MainActivity extends AppCompatActivity {
                 //SeekBar Setup
                 playBack.setProgress(0);
                 playBack.setMax( mediaPlayer.getDuration() );
+            }
+        });
+
+        //Play the next chapter on complete
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                currentSongIndex++;
+                if( currentSongIndex == chapters.size() ) stop(); //Stops the media player at the end of the list
+                else{
+                    try {
+                        play(chapters.get(currentSongIndex).url); //Play next chapter
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
