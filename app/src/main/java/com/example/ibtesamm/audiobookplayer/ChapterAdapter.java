@@ -1,9 +1,13 @@
 package com.example.ibtesamm.audiobookplayer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +26,8 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
 
     onButtonClickListener onButtonClickListener;
 
+    String TAG = "ChapterAdapter";
+
     public ChapterAdapter(Context context, ArrayList<ChapterInfo> list) {
         this.list = list;
         this.context = context;
@@ -35,17 +41,36 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
     }
 
     //Binds a list item to the holder
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final ChapterHolder chapterHolder, final int i) {
 
         final ChapterInfo chapter = list.get(i);
 
         chapterHolder.chapterName.setText( chapter.name ); //Sets the name of the chapter
-        chapterHolder.actionButton.setOnClickListener(new View.OnClickListener() { //Sets the onclick listener
+        chapterHolder.background.setOnClickListener(new View.OnClickListener() { //Sets the onclick listener
             @Override
             public void onClick(View view) {
                 if(onButtonClickListener != null)
-                    onButtonClickListener.onButtonClick(chapterHolder.actionButton, view, chapter, i);
+                    onButtonClickListener.onButtonClick(chapterHolder.background, view, chapter, i);
+            }
+        });
+
+
+        //Changes the background depending on touch to emulate the pressing of the button
+        chapterHolder.background.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.e(TAG, motionEvent.getAction() + "");
+
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) //If pressed make darker
+                    chapterHolder.background.setBackgroundResource(R.color.cardBackgroundDark);
+
+                else //If released make lighter
+                    chapterHolder.background.setBackgroundResource(R.color.cardBackgroundLight);
+
+                return false;
             }
         });
 
@@ -65,7 +90,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
     //Interface that is used to define the buttons within the cardHolder
     public interface onButtonClickListener{
 
-        void onButtonClick(Button b, View v,  ChapterInfo c, int pos);
+        void onButtonClick(ConstraintLayout b, View v,  ChapterInfo c, int pos);
 
     }
 
@@ -73,12 +98,12 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
     public class ChapterHolder extends RecyclerView.ViewHolder{
 
         TextView chapterName;
-        Button actionButton;
+        ConstraintLayout background;
 
         public ChapterHolder(View itemView) {
             super(itemView);
             chapterName = itemView.findViewById(R.id.chapterName);
-            actionButton = itemView.findViewById(R.id.actionBtn);
+            background = itemView.findViewById(R.id.cardBody);
         }
     }
 }
