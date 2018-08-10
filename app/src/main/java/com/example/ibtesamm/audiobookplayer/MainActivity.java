@@ -184,6 +184,10 @@ public class MainActivity extends AppCompatActivity {
                 //SeekBar Setup
                 playBack.setProgress(0);
                 playBack.setMax( mediaPlayer.getDuration() );
+
+                //Activate the play/pause button
+                playButton.setText("Pause");
+                playButton.setClickable(true);
             }
         });
 
@@ -215,13 +219,31 @@ public class MainActivity extends AppCompatActivity {
         mMediaPlayer.release();
         mMediaPlayer = null;
 
+        //Deactivate the play/pause button
+        playButton.setText("Play");
+        playButton.setClickable(false);
+
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ONCLICK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-    public void onStopPressed(View view){
+    public void onPlayBtnPressed(View view){
 
-        if(mMediaPlayer != null) stop();
+        if(mMediaPlayer == null) return; //Button doesnt do anything if the media player isn't playing
+
+        String text = playButton.getText().toString();
+
+        if(text.toLowerCase().contains("play")){
+            //Play the song
+            mMediaPlayer.start();
+            playButton.setText("Pause");
+        }
+
+        else if (mMediaPlayer.isPlaying()){
+            //Pause the song
+            mMediaPlayer.pause();
+            playButton.setText("Play");
+        }
 
     }
 
