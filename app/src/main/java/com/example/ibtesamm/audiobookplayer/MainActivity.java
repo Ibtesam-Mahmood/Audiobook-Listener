@@ -227,13 +227,14 @@ public class MainActivity extends AppCompatActivity {
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ONCLICK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+    //Pauses/Plays the chapter
     public void onPlayBtnPressed(View view){
 
-        if(mMediaPlayer == null) return; //Button doesnt do anything if the media player isn't playing
+        if(mMediaPlayer == null) return; //Button doesn't do anything if the media player isn't playing
 
         String text = playButton.getText().toString();
 
-        if(text.toLowerCase().contains("play")){
+        if(text.toLowerCase().contains("play") && !mMediaPlayer.isPlaying()){
             //Play the song
             mMediaPlayer.start();
             playButton.setText("Pause");
