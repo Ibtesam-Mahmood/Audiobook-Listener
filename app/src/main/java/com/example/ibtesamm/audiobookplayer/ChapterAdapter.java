@@ -2,6 +2,7 @@ package com.example.ibtesamm.audiobookplayer;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
     //Interface that is used to define the buttons within the cardHolder
     public interface onButtonClickListener{
 
-        void onButtonClick(Button b, View v,  ChapterInfo c, int pos);
+        void onButtonClick(ConstraintLayout b, View v,  ChapterInfo c, int pos);
 
     }
 
@@ -73,12 +74,12 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterH
     public class ChapterHolder extends RecyclerView.ViewHolder{
 
         TextView chapterName;
-        Button actionButton;
+        ConstraintLayout actionButton;
 
         public ChapterHolder(View itemView) {
             super(itemView);
             chapterName = itemView.findViewById(R.id.chapterName);
-            actionButton = itemView.findViewById(R.id.actionBtn);
+            actionButton = itemView.findViewById(R.id.cardBody);
         }
     }
 }
