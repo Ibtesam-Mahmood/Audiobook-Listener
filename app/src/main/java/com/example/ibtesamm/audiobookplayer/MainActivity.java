@@ -3,6 +3,7 @@ package com.example.ibtesamm.audiobookplayer;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     //View Elements
     private RecyclerView chapterView;
-    private Button playButton;
+    private ImageButton playButton;
     private SeekBar playBack;
 
     //RecyclerView Support
@@ -186,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 playBack.setMax( mediaPlayer.getDuration() );
 
                 //Activate the play/pause button
-                playButton.setText("Pause");
+                playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_pause));
                 playButton.setClickable(true);
             }
         });
@@ -220,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         mMediaPlayer = null;
 
         //Deactivate the play/pause button
-        playButton.setText("Play");
+        playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
         playButton.setClickable(false);
 
     }
@@ -232,18 +234,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(mMediaPlayer == null) return; //Button doesn't do anything if the media player isn't playing
 
-        String text = playButton.getText().toString();
-
-        if(text.toLowerCase().contains("play") && !mMediaPlayer.isPlaying()){
+        if(!mMediaPlayer.isPlaying()){
             //Play the song
             mMediaPlayer.start();
-            playButton.setText("Pause");
+            playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_pause));
         }
 
-        else if (mMediaPlayer.isPlaying()){
+        else{
             //Pause the song
             mMediaPlayer.pause();
-            playButton.setText("Play");
+            playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
         }
 
     }
