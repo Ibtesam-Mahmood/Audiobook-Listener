@@ -9,6 +9,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -146,29 +147,17 @@ public class MainActivity extends AppCompatActivity {
         //Defines that the play buttons on the cards do
         chapterAdapter.setOnButtonClickListener(new ChapterAdapter.onButtonClickListener() {
             @Override
-            public void onButtonClick(Button b, View v, ChapterInfo c, int pos) {
+            public void onButtonClick(ConstraintLayout b, View v, ChapterInfo c, int pos) {
                 currentSongIndex = pos; //Sets the current songs index
 
-                String btnText = b.getText().toString();
-                //Log.e(TAG, btnText );
-                if(btnText.toLowerCase().contains("play")){
-                    //play song
-
-                    try {
-                        play(c.url);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    b.setText("Stop"); //Sets the button text to stop so that it may be used to stop the audio
-                }
-                else{
-                    //stop song
-
+                if(mMediaPlayer != null){
                     stop();
+                }
 
-                    b.setText("Play");
-
+                try {
+                    play(c.url);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
