@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     play(c.url);
+                    //Log.e(TAG, "onButtonClick:" );
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -216,6 +217,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ONCLICK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    public void onStopPressed(View view){
+
+        if(mMediaPlayer != null) stop();
+
+    }
 
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PERMISSIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
