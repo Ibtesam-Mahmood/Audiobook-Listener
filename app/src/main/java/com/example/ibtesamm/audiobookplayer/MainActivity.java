@@ -29,22 +29,23 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     //System
-    final String TAG = "MainActivity";
+    private final String TAG = "MainActivity";
+    private Thread seekBarThread;
 
     //View Elements
-    RecyclerView chapterView;
-    Button playButton;
-    SeekBar playBack;
+    private RecyclerView chapterView;
+    private Button playButton;
+    private SeekBar playBack;
 
     //RecyclerView Support
-    ChapterAdapter chapterAdapter;
-    ArrayList<ChapterInfo> chapters;
+    private ChapterAdapter chapterAdapter;
+    private ArrayList<ChapterInfo> chapters;
 
     //Files
-    String booksPath = "/storage/self/primary/Books";
+    private String booksPath = "/storage/self/primary/Books";
 
     //Media
-    MediaPlayer mMediaPlayer;
+    private MediaPlayer mMediaPlayer;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SYSTEM~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -67,14 +68,15 @@ public class MainActivity extends AppCompatActivity {
         };
         requestPermission(permissions, 2501);
 
-
+        //SeeksBar Manager Thread created
+        seekBarThread = new SeekBarThread();
+        seekBarThread.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         stop(); //stops the media player
-
     }
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CHAPTERS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -160,10 +162,15 @@ public class MainActivity extends AppCompatActivity {
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                //When chapter is prepared
+                //Play when chapter is prepared
                 mediaPlayer.start();
+
+                //SeekBar Setup
+                playBack.setProgress(0);
+                playBack.setMax( mediaPlayer.getDuration() );
             }
         });
+
 
     }
 
@@ -233,5 +240,42 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CLASSES~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    //Manages the SeekBar position on an external thread
+    private class SeekBarThread extends Thread{
+
+        @Override
+        public void run() {
+
+            while(true){
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                //Manages the seekbar if media player is present
+                if(mMediaPlayer != null){
+
+                    playBack.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            playBack.setProgress( mMediaPlayer.getCurrentPosition() );
+
+                        }
+                    });
+
+                }
+            }
+
+        }
+
+
+    }
+
 
 }
