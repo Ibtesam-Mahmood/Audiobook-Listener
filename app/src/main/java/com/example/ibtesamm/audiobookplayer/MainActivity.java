@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        stop(); //stops the media player
 
     }
 
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     //play song
 
                     try {
-                        play(c.url)
+                        play(c.url);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -137,10 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     //stop song
 
-                    mMediaPlayer.stop();
-                    mMediaPlayer.reset();
-                    mMediaPlayer.release();
-                    mMediaPlayer = null;
+                    stop();
 
                     b.setText("Play");
 
@@ -167,6 +164,16 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
         });
+
+    }
+
+    //Stops the media player
+    private void stop(){
+
+        mMediaPlayer.stop();
+        mMediaPlayer.reset();
+        mMediaPlayer.release();
+        mMediaPlayer = null;
 
     }
 
