@@ -2,26 +2,17 @@ package com.example.ibtesamm.audiobookplayer;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -29,6 +20,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import dm.audiostreamer.AudioStreamingManager;
 import dm.audiostreamer.CurrentSessionCallback;
 import dm.audiostreamer.MediaMetaData;
 import dm.audiostreamer.StreamingManager;
@@ -36,7 +28,7 @@ import dm.audiostreamer.StreamingManager;
 public class MainActivity extends AppCompatActivity implements CurrentSessionCallback {
 
     //DMAudioStreamer
-    StreamingManager streamingManager;
+    private StreamingManager streamingManager;
 
     //System
     private final String TAG = "MainActivity";
@@ -104,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
@@ -173,6 +170,9 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
         });
 
         chapterView.setAdapter(chapterAdapter); //Sets the adapter to the recycler view and shows the cards
+
+        //Registers MediaManager
+        registerMediaManager();
 
     }
 
@@ -311,10 +311,29 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DMAudioStreamer~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+    //Methods
+    private void registerMediaManager(){
 
+        streamingManager = AudioStreamingManager.getInstance(this);
+
+    }
+
+
+    //Interface Items
     @Override
-    public void updatePlaybackState(int i) {
-
+    public void updatePlaybackState(int state) {
+        switch (state) {
+            case PlaybackStateCompat.STATE_PLAYING:
+                break;
+            case PlaybackStateCompat.STATE_PAUSED:
+                break;
+            case PlaybackStateCompat.STATE_NONE:
+                break;
+            case PlaybackStateCompat.STATE_STOPPED:
+                break;
+            case PlaybackStateCompat.STATE_BUFFERING:
+                break;
+        }
     }
 
     @Override
