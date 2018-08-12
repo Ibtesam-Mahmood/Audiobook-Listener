@@ -31,11 +31,12 @@ import java.util.ArrayList;
 
 import dm.audiostreamer.CurrentSessionCallback;
 import dm.audiostreamer.MediaMetaData;
+import dm.audiostreamer.StreamingManager;
 
 public class MainActivity extends AppCompatActivity implements CurrentSessionCallback {
 
     //DMAudioStreamer
-
+    StreamingManager streamingManager;
 
     //System
     private final String TAG = "MainActivity";
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
     private String booksPath = "/storage/self/primary/Books";
 
     //Media
-    private MediaPlayer mMediaPlayer;
+//    private MediaPlayer mMediaPlayer;
 
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SYSTEM~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -89,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
             public void onProgressChanged(SeekBar seekBar, int pos, boolean b) {
                 //Sets the progress of the media player to the desired area
 
-                if(mMediaPlayer != null){
-
-                    mMediaPlayer.seekTo( pos ); //seeks the the changed position
-
-                }
+//                if(mMediaPlayer != null){
+//
+//                    mMediaPlayer.seekTo( pos ); //seeks the the changed position
+//
+//                }
             }
 
             @Override
@@ -158,16 +159,16 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
             public void onButtonClick(ConstraintLayout b, View v, ChapterInfo c, int pos) {
                 currentSongIndex = pos; //Sets the current songs index
 
-                if(mMediaPlayer != null){
-                    stop();
-                }
-
-                try {
-                    play(c.url);
-                    //Log.e(TAG, "onButtonClick:" );
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                if(mMediaPlayer != null){
+//                    stop();
+//                }
+//
+//                try {
+//                    play(c.url);
+//                    //Log.e(TAG, "onButtonClick:" );
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
 
@@ -180,77 +181,77 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
     //Plays the media file defined by the given url
     private void play(String url) throws IOException {
 
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setDataSource(url); //Finds the url for the chapter
-        mMediaPlayer.prepareAsync(); //Prepares the song Asynchronously
-        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                //Play when chapter is prepared
-                mediaPlayer.start();
-
-                //SeekBar Setup
-                playBack.setProgress(0);
-                playBack.setMax( mediaPlayer.getDuration() );
-
-                //Activate the play/pause button
-                playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_pause));
-                playButton.setClickable(true);
-            }
-        });
-
-        //Play the next chapter on complete
-        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                currentSongIndex++;
-                if( currentSongIndex == chapters.size() ) stop(); //Stops the media player at the end of the list
-                else{
-                    try {
-                        play(chapters.get(currentSongIndex).url); //Play next chapter
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+//        mMediaPlayer = new MediaPlayer();
+//        mMediaPlayer.setDataSource(url); //Finds the url for the chapter
+//        mMediaPlayer.prepareAsync(); //Prepares the song Asynchronously
+//        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mediaPlayer) {
+//                //Play when chapter is prepared
+//                mediaPlayer.start();
+//
+//                //SeekBar Setup
+//                playBack.setProgress(0);
+//                playBack.setMax( mediaPlayer.getDuration() );
+//
+//                //Activate the play/pause button
+//                playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_pause));
+//                playButton.setClickable(true);
+//            }
+//        });
+//
+//        //Play the next chapter on complete
+//        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                currentSongIndex++;
+//                if( currentSongIndex == chapters.size() ) stop(); //Stops the media player at the end of the list
+//                else{
+//                    try {
+//                        play(chapters.get(currentSongIndex).url); //Play next chapter
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
 
     }
 
     //Stops the media player
     private void stop(){
 
-        if(mMediaPlayer == null) return;
-
-        mMediaPlayer.stop();
-        mMediaPlayer.reset();
-        mMediaPlayer.release();
-        mMediaPlayer = null;
-
-        //Deactivate the play/pause button
-        playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
-        playButton.setClickable(false);
-
-    }
-
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ONCLICK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-    //Pauses/Plays the chapter
-    public void onPlayBtnPressed(View view){
-
-        if(mMediaPlayer == null) return; //Button doesn't do anything if the media player isn't playing
-
-        if(!mMediaPlayer.isPlaying()){
-            //Play the song
-            mMediaPlayer.start();
-            playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_pause));
-        }
-
-        else{
-            //Pause the song
-            mMediaPlayer.pause();
-            playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
-        }
+//        if(mMediaPlayer == null) return;
+//
+//        mMediaPlayer.stop();
+//        mMediaPlayer.reset();
+//        mMediaPlayer.release();
+//        mMediaPlayer = null;
+//
+//        //Deactivate the play/pause button
+//        playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
+//        playButton.setClickable(false);
+//
+//    }
+//
+//    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ONCLICK~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+//
+//    //Pauses/Plays the chapter
+//    public void onPlayBtnPressed(View view){
+//
+//        if(mMediaPlayer == null) return; //Button doesn't do anything if the media player isn't playing
+//
+//        if(!mMediaPlayer.isPlaying()){
+//            //Play the song
+//            mMediaPlayer.start();
+//            playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_pause));
+//        }
+//
+//        else{
+//            //Pause the song
+//            mMediaPlayer.pause();
+//            playButton.setImageDrawable(getDrawable(android.R.drawable.ic_media_play));
+//        }
 
     }
 
@@ -358,18 +359,18 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
                 }
 
                 //Manages the seekbar if media player is present
-                if(mMediaPlayer != null){
-
-                    playBack.post(new Runnable() {
-                        @Override
-                        public void run() {
-//                            Log.e(TAG, mMediaPlayer.getCurrentPosition() + " | " + playBack.getProgress());
-                            playBack.setMax( mMediaPlayer.getDuration() ); //Fixes the seekbar bug (seek bar wouldnt move)
-                            playBack.setProgress( mMediaPlayer.getCurrentPosition() );
-                        }
-                    });
-
-                }
+//                if(mMediaPlayer != null){
+//
+//                    playBack.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+////                            Log.e(TAG, mMediaPlayer.getCurrentPosition() + " | " + playBack.getProgress());
+//                            playBack.setMax( mMediaPlayer.getDuration() ); //Fixes the seekbar bug (seek bar wouldnt move)
+//                            playBack.setProgress( mMediaPlayer.getCurrentPosition() );
+//                        }
+//                    });
+//
+//                }
             }
 
         }
