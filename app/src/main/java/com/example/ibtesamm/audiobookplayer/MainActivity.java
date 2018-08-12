@@ -29,7 +29,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import dm.audiostreamer.CurrentSessionCallback;
+import dm.audiostreamer.MediaMetaData;
+
+public class MainActivity extends AppCompatActivity implements CurrentSessionCallback {
+
+    //DMAudioStreamer
+
 
     //System
     private final String TAG = "MainActivity";
@@ -299,6 +305,39 @@ public class MainActivity extends AppCompatActivity {
                 return;
 
         }
+
+    }
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DMAudioStreamer~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+    @Override
+    public void updatePlaybackState(int i) {
+
+    }
+
+    @Override
+    public void playSongComplete() {
+
+    }
+
+    @Override
+    public void currentSeekBarPosition(int i) {
+
+    }
+
+    @Override
+    public void playCurrent(int i, MediaMetaData mediaMetaData) {
+
+    }
+
+    @Override
+    public void playNext(int i, MediaMetaData mediaMetaData) {
+
+    }
+
+    @Override
+    public void playPrevious(int i, MediaMetaData mediaMetaData) {
 
     }
 
