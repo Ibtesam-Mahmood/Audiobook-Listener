@@ -2,11 +2,13 @@ package com.example.ibtesamm.audiobookplayer;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.media.MediaMetadata;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -101,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -179,7 +180,9 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~MEDIA~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     //Plays the media file defined by the given url
-    private void play(String url) throws IOException {
+    private void play(ChapterInfo chapterInfo) throws IOException {
+
+        MediaMetadata mediaMetadata = createMetaData(ChapterInfo chapterInfo);
 
 //        mMediaPlayer = new MediaPlayer();
 //        mMediaPlayer.setDataSource(url); //Finds the url for the chapter
@@ -312,9 +315,18 @@ public class MainActivity extends AppCompatActivity implements CurrentSessionCal
     /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DMAudioStreamer~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     //Methods
+
+    //Registers the streamingManager
     private void registerMediaManager(){
 
         streamingManager = AudioStreamingManager.getInstance(this);
+
+    }
+
+    //Creates a MediaMetaDataObject from a SongInfo object
+    private MediaMetadata createMetaData(ChapterInfo chapterInfo){
+        MediaMetadata mediaMetadata = new MediaMetadata();
+
 
     }
 

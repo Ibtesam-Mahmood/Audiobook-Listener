@@ -1,5 +1,7 @@
 package com.example.ibtesamm.audiobookplayer;
 
+import android.media.MediaMetadata;
+
 public class ChapterInfo {
 
     //Class that represents a chapter
